@@ -24,18 +24,37 @@ substitution_box = {
 def main():
     """This is the main function."""
     sub_nibbles = []
+    shifted_row = []
+    MixColumn = []
 
     text_block = input("Enter a text block: ")
-    if len(text_block) != 4:
+    if len(text_block) > 4:
         print("Input is not valid. It should have exactly 4 characters.")
         return
 
+    text_block = text_block.zfill(4)
     # Convert the hexadecimal to binary and remove the '0b' prefix
     binary_value = bin(int(text_block, 16))[2:]
+    binary_value = binary_value.zfill(16)
+    sub_nibbles = sub_nibbles_func(binary_value)
+    print("SubNibbles: ", sub_nibbles)
 
 
-def encrypt(message, key):
-    """Encrypts the message using the key."""
+def sub_nibbles_func(binary_value):
+    """This function performs the substitution of nibbles."""
+    sub_nibbles_data = []
+    for i in range(0, 16, 4):
+        sub_nibbles_data.append(substitution_box[binary_value[i : i + 4]])
+
+    sub_nibbles_data = "".join(sub_nibbles_data)
+    hexadecimal_values = []
+    for binary_value in sub_nibbles_data:
+        # Convert the binary to an integer and then to hexadecimal
+        hex_value = hex(int(binary_value, 2))
+
+        # Append the hexadecimal value to the list
+        hexadecimal_values.append(hex_value)
+    return hexadecimal_values
 
 
 if __name__ == "__main__":
