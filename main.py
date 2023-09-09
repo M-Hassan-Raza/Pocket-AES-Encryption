@@ -37,7 +37,7 @@ def main():
     binary_value = bin(int(text_block, 16))[2:]
     binary_value = binary_value.zfill(16)
     sub_nibbles = sub_nibbles_func(binary_value)
-    print("SubNibbles: ", sub_nibbles)
+    print(f"SubNibbles({text_block}) = ", sub_nibbles)
 
 
 def sub_nibbles_func(binary_value):
@@ -46,14 +46,16 @@ def sub_nibbles_func(binary_value):
     for i in range(0, 16, 4):
         sub_nibbles_data.append(substitution_box[binary_value[i : i + 4]])
 
-    sub_nibbles_data = "".join(sub_nibbles_data)
     hexadecimal_values = []
     for binary_value in sub_nibbles_data:
-        # Convert the binary to an integer and then to hexadecimal
-        hex_value = hex(int(binary_value, 2))
+        # Convert the binary to an integer and then to a hexadecimal nibble
+        hex_value = hex(int(binary_value, 2))[2:]
 
-        # Append the hexadecimal value to the list
+        # Append the hexadecimal nibble to the list
         hexadecimal_values.append(hex_value)
+
+    # Join the nibbles together to get the final output
+    hexadecimal_values = "".join(hexadecimal_values)
     return hexadecimal_values
 
 
