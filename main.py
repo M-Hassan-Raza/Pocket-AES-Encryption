@@ -24,15 +24,14 @@ substitution_box = {
 def main():
     """This is the main function."""
     sub_nibbles = []
-    hex_value = "903b"
-    # Convert the hexadecimal to binary and remove the '0b' prefix
-    binary_value = bin(int(hex_value, 16))[2:]
 
-    # Ensure the binary representation is 16 bits by padding with leading zeros
-    binary_value = binary_value.zfill(16)
-
-    print(binary_value)
     text_block = input("Enter a text block: ")
+    if len(text_block) != 4:
+        print("Input is not valid. It should have exactly 4 characters.")
+        return
+
+    # Convert the hexadecimal to binary and remove the '0b' prefix
+    binary_value = bin(int(text_block, 16))[2:]
 
 
 def encrypt(message, key):
