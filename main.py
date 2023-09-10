@@ -35,21 +35,29 @@ def main():
     """This is the main function."""
     sub_nibbles = []
     shifted_row = []
-    MixColumn = []
+    mixed_column = []
 
     text_block = input("Enter a text block: ")
     if len(text_block) > 4:
         print("Text Block invalid. It should have exactly 4 characters.")
         return
-
     text_block = text_block.zfill(4)
+
     # Convert the hexadecimal to binary and remove the '0b' prefix and make the string 16 bit
     text_binary_value = bin(int(text_block, 16))[2:].zfill(16)
+
     sub_nibbles = sub_nibbles_func(text_binary_value)
+    sub_nibbles_string = "".join(sub_nibbles)
     sub_nibbles_binary_value = bin(int("".join(sub_nibbles), 16))[2:]
-    print(f"SubNibbles({text_block}) = ", sub_nibbles)
+    print(f"SubNibbles({text_block}) = ", sub_nibbles_string)
+
     shifted_row = shift_rows(text_binary_value)
-    print(f"ShiftRows({text_block}) = ", shifted_row)
+    shifted_row_string = "".join(shifted_row)
+    print(f"ShiftRows({text_block}) = ", shifted_row_string)
+
+    mixed_column = mix_columns(text_block)
+    mixed_column_string = "".join(mixed_column)
+    print(f"MixColumns({text_block}) = ", mixed_column)
 
     key = input("Enter a key: ")
     if len(key) > 4:
@@ -113,10 +121,10 @@ def mix_columns(hex_input_value):
         int(nibbles[2], 2), constant_matrix_binary[1][0]
     ) ^ finite_field_multiply(int(nibbles[3], 2), constant_matrix_binary[1][1])
 
-    processed_nibbles.append(hex(d0)[2:].zfill(4))
-    processed_nibbles.append(hex(d1)[2:].zfill(4))
-    processed_nibbles.append(hex(d2)[2:].zfill(4))
-    processed_nibbles.append(hex(d3)[2:].zfill(4))
+    processed_nibbles.append(hex(d0)[2:])
+    processed_nibbles.append(hex(d1)[2:])
+    processed_nibbles.append(hex(d2)[2:])
+    processed_nibbles.append(hex(d3)[2:])
 
     return processed_nibbles
 
