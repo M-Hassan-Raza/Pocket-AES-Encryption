@@ -20,6 +20,8 @@ substitution_box = {
     "1111": "1000",
 }
 
+constant matrix = {1,4,4,1}
+
 
 def main():
     """This is the main function."""
@@ -29,15 +31,27 @@ def main():
 
     text_block = input("Enter a text block: ")
     if len(text_block) > 4:
-        print("Input is not valid. It should have exactly 4 characters.")
+        print("Text Block invalid. It should have exactly 4 characters.")
         return
 
     text_block = text_block.zfill(4)
     # Convert the hexadecimal to binary and remove the '0b' prefix
-    binary_value = bin(int(text_block, 16))[2:]
-    binary_value = binary_value.zfill(16)
-    sub_nibbles = sub_nibbles_func(binary_value)
+    text_binary_value = bin(int(text_block, 16))[2:]
+    text_binary_value = binary_value.zfill(16)
+    sub_nibbles = sub_nibbles_func(text_binary_value)
     print(f"SubNibbles({text_block}) = ", sub_nibbles)
+
+    key = input("Enter a key: ")
+    if len(key) > 4:
+        print("Key invalid. It should have exactly 4 characters.")
+        return
+
+    key = key.zfill(4)
+    # Convert the hexadecimal to binary and remove the '0b' prefix
+    key_binary_value = bin(int(key, 16))[2:]
+    key_binary_value = key_binary_value.zfill(16)
+    result_of_round_key = add_round_key(text_binary_value, key_binary_value)
+
 
 
 def sub_nibbles_func(binary_value):
@@ -57,6 +71,56 @@ def sub_nibbles_func(binary_value):
     # Join the nibbles together to get the final output
     hexadecimal_values = "".join(hexadecimal_values)
     return hexadecimal_values
+
+
+def shift_rows(binary_value):
+    pass
+
+
+def mix_columns(binary_value):
+    pass
+
+
+def add_round_key(binary_text_value, binary_key_value):
+    result_of_round_key = bitwise_xor(binary_text_value, binary_key_value)
+    return result_of_round_key
+
+
+def bitwise_xor(bin_str1, bin_str2):
+    """Perform bitwise XOR between two binary strings of equal length."""
+    if len(bin_str1) != len(bin_str2):
+        raise ValueError("Binary strings must have the same length")
+
+    result = ""
+    for bit1, bit2 in zip(bin_str1, bin_str2):
+        result += "1" if bit1 != bit2 else "0"
+
+    return result
+
+
+def finite_field_multiply(a, b):
+    # Initialize m to 0 to store the result
+    m = 0
+
+    while b > 0:
+        # Check if the LSB of b is 1
+        if b & 1 == 1:
+            # Perform bitwise XOR to accumulate the product
+            m ^= a
+
+        # Left-shift a by 1 bit (equivalent to multiplying by 2 in the field)
+        a <<= 1
+
+        # Check if the fourth bit of a is set
+        if a & 0b10000:
+            # Perform reduction modulo the irreducible polynomial
+            a ^= 0b10011  # Irreducible polynomial 𝒙^4 + 𝒙 + 𝟏
+
+        # Right-shift b by 1 bit (equivalent to dividing by 2 in the field)
+        b >>= 1
+
+    return m
+
 
 
 if __name__ == "__main__":
