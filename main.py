@@ -33,6 +33,7 @@ constant_matrix_binary = [
 Rcon_1 = 0b1110
 Rcon_2 = 0b1010
 
+
 def main():
     """This is the main function."""
     sub_nibbles = []
@@ -75,18 +76,26 @@ def main():
 def sub_nibbles_func(binary_value):
     """This function performs the substitution of nibbles."""
     sub_nibbles_data = []
-    for i in range(0, 16, 4):
-        sub_nibbles_data.append(substitution_box[binary_value[i : i + 4]])
+
+    # Check if the input is 4 bits or 16 bits
+    if len(binary_value) == 4:
+        # Input is already a 4-bit nibble
+        sub_nibbles_data.append(substitution_box[binary_value])
+    elif len(binary_value) == 16:
+        # Input is a 16-bit binary value, split it into 4-bit nibbles
+        for i in range(0, 16, 4):
+            sub_nibbles_data.append(substitution_box[binary_value[i : i + 4]])
+    else:
+        raise ValueError("Input length must be either 4 or 16 bits")
 
     hexadecimal_values = []
+
     for binary_value in sub_nibbles_data:
         # Convert the binary to an integer and then to a hexadecimal nibble
         hex_value = hex(int(binary_value, 2))[2:]
 
         # Append the hexadecimal nibble to the list
         hexadecimal_values.append(hex_value)
-
-    # Join the nibbles together to get the final output
 
     return hexadecimal_values
 
@@ -131,12 +140,13 @@ def mix_columns(hex_input_value):
     return processed_nibbles
 
 
-def generate_round_keys(binary_key):
+def generate_round_keys(binary_key, sub_nibbles_binary_value):
     """This function generates the round keys for Pocket AES encryption method."""
     round_key_one = []
     round_key_two = []
 
-    round_key_one[0] = binary_key[0] ^ 
+    # round_key_one[0] = binary_key[0] ^
+
 
 def add_round_key(binary_text_value, binary_key_value):
     result_of_round_key = bitwise_xor(binary_text_value, binary_key_value)
