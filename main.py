@@ -182,11 +182,6 @@ def generate_round_keys(binary_key):
     return round_key_one, round_key_two
 
 
-def add_round_key(binary_text_value, binary_key_value):
-    result_of_round_key = bitwise_xor(binary_text_value, binary_key_value)
-    return result_of_round_key
-
-
 def bitwise_xor(bin_str1, bin_str2):
     """Perform bitwise XOR between two binary strings of equal length."""
     if len(bin_str1) != len(bin_str2):
