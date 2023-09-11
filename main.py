@@ -20,6 +20,26 @@ substitution_box = {
     "1111": "1000",
 }
 
+inverse_substitution_box = {
+    "0000": "1010",
+    "0001": "0000",
+    "0010": "1001",
+    "0011": "1110",
+    "0100": "0110",
+    "0101": "0011",
+    "0110": "1111",
+    "0111": "0101",
+    "1000": "0001",
+    "1001": "1101",
+    "1010": "1100",
+    "1011": "0111",
+    "1100": "1011",
+    "1101": "0100",
+    "1110": "0010",
+    "1111": "1000",
+}
+
+
 constant_matrix = [
     [1, 4],
     [4, 1],
@@ -28,6 +48,16 @@ constant_matrix = [
 constant_matrix_binary = [
     [0x1, 0x4],
     [0x4, 0x1],
+]
+
+inverse_constant_matrix = [
+    [9, 2],
+    [2, 9],
+]
+
+inverse_constant_matrix_binary = [
+    [0x9, 0x2],
+    [0x2, 0x9],
 ]
 
 Rcon_1 = "1110"
@@ -70,7 +100,17 @@ def main():
     # Convert the hexadecimal to binary and remove the '0b' prefix
     key_binary_value = bin(int(key, 16))[2:]
     key_binary_value = key_binary_value.zfill(16)
-    result_of_round_key = generate_round_keys(key_binary_value)
+    round_key_one, round_key_two = generate_round_keys(key_binary_value)
+    round_key_one_string = "".join(
+        [hex(int(binary, 2))[2:] for binary in round_key_one]
+    )
+    round_key_two_string = "".join(
+        [hex(int(binary, 2))[2:] for binary in round_key_two]
+    )
+
+    print(
+        f"GenerateRoundKets({key}) = ({round_key_one_string}, {round_key_two_string})"
+    )
 
 
 def sub_nibbles_func(binary_value):
@@ -177,8 +217,6 @@ def generate_round_keys(binary_key):
     round_key_two.append(bitwise_xor(round_key_one[2], round_key_two[1]))
     round_key_two.append(bitwise_xor(round_key_one[3], round_key_two[2]))
 
-    print(f"Round Key 1 = {round_key_one}")
-    print(f"Round Key 2 = {round_key_two}")
     return round_key_one, round_key_two
 
 
