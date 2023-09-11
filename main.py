@@ -30,6 +30,8 @@ constant_matrix_binary = [
     [0x4, 0x1],
 ]
 
+Rcon_1 = 0b1110
+Rcon_2 = 0b1010
 
 def main():
     """This is the main function."""
@@ -57,7 +59,7 @@ def main():
 
     mixed_column = mix_columns(text_block)
     mixed_column_string = "".join(mixed_column)
-    print(f"MixColumns({text_block}) = ", mixed_column)
+    print(f"MixColumns({text_block}) = ", mixed_column_string)
 
     key = input("Enter a key: ")
     if len(key) > 4:
@@ -128,6 +130,13 @@ def mix_columns(hex_input_value):
 
     return processed_nibbles
 
+
+def generate_round_keys(binary_key):
+    """This function generates the round keys for Pocket AES encryption method."""
+    round_key_one = []
+    round_key_two = []
+
+    round_key_one[0] = binary_key[0] ^ 
 
 def add_round_key(binary_text_value, binary_key_value):
     result_of_round_key = bitwise_xor(binary_text_value, binary_key_value)
